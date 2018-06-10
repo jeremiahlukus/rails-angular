@@ -9,43 +9,56 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var Rx_1 = require('rxjs/Rx');
+var document_service_1 = require('../../services/document.service');
 var DocumentsComponent = (function () {
-    function DocumentsComponent() {
+    function DocumentsComponent(documentService) {
+        this.documentService = documentService;
         this.pageTitle = "Document Dashboard";
-        this.documents = [
-            {
-                title: "Doc1",
-                description: "Desc1",
-                file_url: "Some url",
-                updated_at: "2/8/2019",
-                image_url: "https://pakwired.com/wp-content/uploads/2017/10/Freelancer-No-credit.jpg",
-            },
-            {
-                title: "Doc2",
-                description: "Desc2",
-                file_url: "Some url",
-                updated_at: "2/8/2019",
-                image_url: "https://pakwired.com/wp-content/uploads/2017/10/Freelancer-No-credit.jpg",
-            },
-            {
-                title: "Doc2",
-                description: "Desc2",
-                file_url: "Some url",
-                updated_at: "2/8/2019",
-                image_url: "https://pakwired.com/wp-content/uploads/2017/10/Freelancer-No-credit.jpg",
-            }
-        ];
+        this.mode = "Observable";
     }
+    DocumentsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        var timer = Rx_1.Observable.timer(0, 5000);
+        timer.subscribe(function () { return _this.getDocuments(); });
+    };
+    DocumentsComponent.prototype.getDocuments = function () {
+        var _this = this;
+        this.documentService.getDocuments()
+            .subscribe(function (documents) { return _this.documents = documents; }, function (error) { return _this.errorMessage = error; });
+    };
     DocumentsComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'documents',
             templateUrl: 'documents.component.html',
-            styleUrls: ['../../styles/documents.component.css']
+            styleUrls: ['../../styles/documents.component.css'],
+            providers: [document_service_1.DocumentService],
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [document_service_1.DocumentService])
     ], DocumentsComponent);
     return DocumentsComponent;
 }());
 exports.DocumentsComponent = DocumentsComponent;
+// {
+//   title: "Doc1",
+//   description: "Desc1", 
+//   file_url: "Some url",
+//   updated_at: "2/8/2019",
+//   image_url: "https://pakwired.com/wp-content/uploads/2017/10/Freelancer-No-credit.jpg",
+// },
+// {
+//   title: "Doc2",
+//   description: "Desc2", 
+//   file_url: "Some url",
+//   updated_at: "2/8/2019",
+//   image_url: "https://pakwired.com/wp-content/uploads/2017/10/Freelancer-No-credit.jpg",
+// },
+// {
+//   title: "Doc2",
+//   description: "Desc2", 
+//   file_url: "Some url",
+//   updated_at: "2/8/2019",
+//   image_url: "https://pakwired.com/wp-content/uploads/2017/10/Freelancer-No-credit.jpg",
+// }
 //# sourceMappingURL=documents.component.js.map
